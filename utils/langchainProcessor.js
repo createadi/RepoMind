@@ -1,17 +1,30 @@
 import { ChatOpenAI } from "@langchain/openai";
 import dotenv from "dotenv";
+import { encoding_for_model } from "tiktoken";
 
 dotenv.config();
 
 const llm = new ChatOpenAI({
+    model: "gpt-4o-mini", // or "gpt-3.5-turbo"
     openAIApiKey: process.env.OPENAI_API_KEY,
     temperature: 0.2,
 });
 
+
+// Function to count tokens in a string
+function countTokens(text) {
+    const encoder = encoding_for_model("gpt-4o-mini"); // or "gpt-3.5-turbo"
+    const tokens = encoder.encode(text);
+    return tokens.length;
+}
+
 // Generate summary of the repository
 export async function summarizeRepository(files) {
+    const fileSummaries = files.map(f => `${f.filename}:\n${f.content}`).join("\n\n");
 
-    const fileSummaries = files.map(f => `${f.filename}:\n${f.content.substring(0, 200)}...`).join("\n\n");
+    // 🔥 Check token count before sending to OpenAI
+    const tokenCount = countTokens(fileSummaries);
+    console.log(`Token Count: ${tokenCount}`);
 
     const messages = [
         { role: "system", content: "You are an AI assistant that summarizes GitHub repositories." },
@@ -19,6 +32,12 @@ export async function summarizeRepository(files) {
     ];
 
     try {
+        // If tokens are too many, truncate or split into chunks
+        if (tokenCount > 4096) {
+            console.warn("⚠️ Warning: Too many tokens! Consider summarizing in chunks.");
+            return "Error: Token limit exceeded.";
+        }
+
         const response = await llm.invoke(messages);
         return response;
     } catch (error) {
@@ -30,7 +49,11 @@ export async function summarizeRepository(files) {
 // Answer questions based on repo content
 export async function askQuestion(files, question) {
 
-    const fileSummaries = files.map(f => `${f.filename}:\n${f.content.substring(0, 200)}...`).join("\n\n");
+    const fileSummaries = files.map(f => `${f.filename}:\n${f.content}`).join("\n\n");
+
+    // 🔥 Check token count before sending to OpenAI
+    const tokenCount = countTokens(fileSummaries);
+    console.log(`Token Count: ${tokenCount}`);
 
     const messages = [
         { role: "system", content: "You are an AI assistant that answers questions about a GitHub repository." },
@@ -39,6 +62,11 @@ export async function askQuestion(files, question) {
     ];
 
     try {
+        if (tokenCount > 4096) {
+            console.warn("⚠️ Warning: Too many tokens! Consider summarizing in chunks.");
+            return "Error: Token limit exceeded.";
+        }
+
         const response = await llm.invoke(messages);
         return response;
     } catch (error) {
