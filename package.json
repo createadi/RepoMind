@@ -1,0 +1,23 @@
+{
+  "name": "repomind",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A smart tool that comprehends and answers questions about your repo.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs-extra": "^11.3.0",
+    "langchain": "^0.3.19",
+    "openai": "^4.87.3",
+    "recursive-readdir": "^2.2.3",
+    "simple-git": "^3.27.0"
+  }
+}
