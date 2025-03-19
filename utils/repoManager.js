@@ -18,19 +18,33 @@ export async function cloneRepository(repoUrl, repoName) {
 // Read all files from the repository
 export async function readRepositoryFiles(repoPath) {
     const files = [];
+
     async function readDir(directory) {
         const items = await fs.readdir(directory);
         for (const item of items) {
             const fullPath = path.join(directory, item);
+            const relativePath = fullPath.replace(repoPath, "").replace(/^\/|\\/, "");
+
+            if (
+                item === ".git" ||
+                item === "requirements.txt" ||
+                item === "README.md" ||
+                item === "LICENSE"
+            ) {
+                continue;
+            }
+
             const stat = await fs.stat(fullPath);
             if (stat.isDirectory()) {
                 await readDir(fullPath);
             } else {
                 const content = await fs.readFile(fullPath, "utf-8");
-                files.push({ filename: fullPath.replace(repoPath, ""), content });
+
+                files.push({ filename: relativePath, content: content.trim() });
             }
         }
     }
+
     await readDir(repoPath);
     return files;
 }
