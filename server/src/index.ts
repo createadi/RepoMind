@@ -7,7 +7,7 @@ import {
 } from "./utils/langchainProcessor.js";
 
 const app = express();
-const PORT = 5000;
+const PORT = 3000;
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -24,7 +24,6 @@ app.post("/analyze", async (req: Request, res: Response) => {
 
     res.json({ summary });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: (error as any).message });
   }
 });
@@ -43,7 +42,6 @@ app.post("/ask", async (req: Request, res: Response) => {
 
     res.json({ answer });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: (error as any).message });
   }
 });
