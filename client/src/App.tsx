@@ -5,6 +5,8 @@ import RepoInput from './components/RepoInput';
 import RepoSummary from './components/RepoSummary';
 import Loader from './components/Loader';
 import './App.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   const [summary, setSummary] = useState('');
@@ -40,25 +42,30 @@ function App() {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100vh"
-    >
-      <Typography variant="h3" gutterBottom>
-        RepoMind
-      </Typography>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <RepoInput onAnalyze={handleAnalyze} onAsk={handleAsk} />
-          <RepoSummary summary={summary} answer={answer} />
-        </>
-      )}
-    </Box>
+    <>
+      <Header />
+      <Box sx={{ p: 2, mt: 8 }}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography variant="h3" gutterBottom>
+            RepoMind
+          </Typography>
+          {loading ? (
+            <Loader />
+          ) : (
+            <Box>
+              <RepoInput onAnalyze={handleAnalyze} onAsk={handleAsk} />
+              <RepoSummary summary={summary} answer={answer} />
+            </Box>
+          )}
+        </Box>
+      </Box>
+      <Footer />
+    </>
   );
 }
 
