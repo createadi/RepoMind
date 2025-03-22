@@ -1,27 +1,24 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import { Divider } from '@mui/material';
 
 interface RepoSummaryProps {
-  summary: string;
-  answer: string;
+  title: string;
+  content: React.ReactNode;
 }
 
-const RepoSummary: React.FC<RepoSummaryProps> = ({ summary, answer }) => {
+const RepoSummary: React.FC<RepoSummaryProps> = ({ title, content }) => {
   return (
-    <Box mt={4}>
-      {summary && (
-        <>
-          <Typography variant="h5">Repository Summary</Typography>
-          <Typography variant="body1">{summary}</Typography>
-        </>
-      )}
-      {answer && (
-        <>
-          <Typography variant="h5">Answer</Typography>
-          <Typography variant="body1">{answer}</Typography>
-        </>
-      )}
-    </Box>
+    <Paper elevation={3} sx={{ p: 2, m: 1, width: '45%' }}>
+      <Typography variant="h5" gutterBottom>
+        {title}
+      </Typography>
+      <Divider/>
+      <Box mt={2}>
+        {content}
+      </Box>
+    </Paper>
   );
 };
 

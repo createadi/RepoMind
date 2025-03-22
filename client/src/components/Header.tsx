@@ -16,7 +16,7 @@ const Header: React.FC = () => {
           edge="end"
           color="inherit"
           aria-label="github"
-          href="https://github.com"
+          href="https://github.com/createadi/RepoMind"
           target="_blank"
           sx={{ marginLeft: 'auto', marginRight: 5, '&:hover': { color: 'white' } }}
         >
