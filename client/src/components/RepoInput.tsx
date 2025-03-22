@@ -5,13 +5,15 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface RepoInputProps {
   onAnalyze: (repoUrl: string) => void;
   onAsk: (repoUrl: string, question: string) => void;
+  loading: boolean;
 }
 
-const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk }) => {
+const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk, loading }) => {
   const [repoUrl, setRepoUrl] = useState('');
   const [question, setQuestion] = useState('');
   const [tabIndex, setTabIndex] = useState(0);
@@ -63,9 +65,13 @@ const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk }) => {
         />
       )}
       {error && <Typography color="error">{error}</Typography>}
-      <Button variant="contained" onClick={tabIndex === 0 ? handleAnalyze : handleAsk}>
-        {tabIndex === 0 ? 'Analyze' : 'Ask'}
-      </Button>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Button variant="contained" onClick={tabIndex === 0 ? handleAnalyze : handleAsk}>
+          {tabIndex === 0 ? 'Analyze' : 'Ask'}
+        </Button>
+      )}
     </Box>
   );
 };
