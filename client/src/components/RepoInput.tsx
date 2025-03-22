@@ -43,13 +43,14 @@ const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk }) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
       <Tabs value={tabIndex} onChange={handleTabChange}>
-        <Tab label="Analyze" />
-        <Tab label="Ask" />
+        <Tab label="Analyze" sx={{ minWidth: '250px' }} />
+        <Tab label="Ask" sx={{ minWidth: '250px' }}/>
       </Tabs>
       <TextField
         label="Repository Link"
         variant="outlined"
         value={repoUrl}
+        sx={{ minWidth: '500px' }}
         onChange={(e) => setRepoUrl(e.target.value)}
       />
       {tabIndex === 1 && (
@@ -57,6 +58,7 @@ const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk }) => {
           label="Question"
           variant="outlined"
           value={question}
+          sx={{ minWidth: '500px' }}
           onChange={(e) => setQuestion(e.target.value)}
         />
       )}

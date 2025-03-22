@@ -51,13 +51,16 @@ function App() {
           alignItems="center"
           justifyContent="center"
         >
-          <Typography variant="h3" gutterBottom>
-            RepoMind
+          <Typography variant="h3" fontWeight={900} gutterBottom>
+          AI-Powered Git Repo Insights
+          </Typography>
+          <Typography variant="body1" color='#696969' maxWidth={600} gutterBottom>
+          An AI-driven platform that summarizes Git repositories and provides code explanations, enabling faster understanding and insights for developers.
           </Typography>
           {loading ? (
             <Loader />
           ) : (
-            <Box>
+            <Box minWidth={600}>
               <RepoInput onAnalyze={handleAnalyze} onAsk={handleAsk} />
               <RepoSummary summary={summary} answer={answer} />
             </Box>
