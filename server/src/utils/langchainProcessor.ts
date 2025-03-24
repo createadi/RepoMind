@@ -34,11 +34,11 @@ export async function summarizeRepository(files: File[]): Promise<string> {
   const messages = [
     {
       role: "system",
-      content: "You are an AI assistant that summarizes GitHub repositories.",
+      content: "You are an AI assistant that summarizes GitHub repositories. Structure the format like ChatGPT, using proper paragraphs and bullet points and codeblocks.",
     },
     {
       role: "user",
-      content: `Summarize this Git repository:\n\n${fileSummaries}`,
+      content: `Summarize this Git repository:\n\n${fileSummaries} and do not include any title and code at all.`,
     },
   ];
 

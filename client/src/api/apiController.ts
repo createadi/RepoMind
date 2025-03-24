@@ -1,8 +1,8 @@
 export const analyzeRepository = async (repoUrl: string) => {
-  const response = await fetch('http://localhost:3000/analyze', {
-    method: 'POST',
+  const response = await fetch("http://localhost:3000/summarize", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ repoUrl }),
   });
@@ -11,10 +11,10 @@ export const analyzeRepository = async (repoUrl: string) => {
 };
 
 export const askQuestion = async (repoUrl: string, question: string) => {
-  const response = await fetch('http://localhost:3000/ask', {
-    method: 'POST',
+  const response = await fetch("http://localhost:3000/ask", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ repoUrl, question }),
   });
