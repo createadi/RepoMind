@@ -1,58 +1,57 @@
-import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import { RepoInputProps } from "../types";
 
-interface RepoInputProps {
-  onAnalyze: (repoUrl: string) => void;
-  onAsk: (repoUrl: string, question: string) => void;
-  loading: boolean;
-}
-
-const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk, loading }) => {
-  const [repoUrl, setRepoUrl] = useState('');
-  const [question, setQuestion] = useState('');
+const RepoInput: React.FC<RepoInputProps> = ({
+  onSummarize,
+  onAsk,
+  loading,
+}) => {
+  const [repoUrl, setRepoUrl] = useState("");
+  const [question, setQuestion] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const handleAnalyze = () => {
+  const handleSummarize = () => {
     if (!repoUrl) {
-      setError('Repository URL is required');
+      setError("Repository URL is required");
       return;
     }
-    setError('');
-    onAnalyze(repoUrl);
+    setError("");
+    onSummarize(repoUrl);
   };
 
   const handleAsk = () => {
     if (!repoUrl || !question) {
-      setError('Both repoUrl and question are required');
+      setError("Both repoUrl and question are required");
       return;
     }
-    setError('');
+    setError("");
     onAsk(repoUrl, question);
   };
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
-    setError('');
+    setError("");
   };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
       <Tabs value={tabIndex} onChange={handleTabChange}>
-        <Tab label="Analyze" sx={{ minWidth: '250px' }} />
-        <Tab label="Ask" sx={{ minWidth: '250px' }}/>
+        <Tab label="Summarize" sx={{ minWidth: "250px" }} />
+        <Tab label="Ask" sx={{ minWidth: "250px" }} />
       </Tabs>
       <TextField
         label="Repository Link"
         variant="outlined"
         value={repoUrl}
-        sx={{ minWidth: '500px' }}
+        sx={{ minWidth: "500px", marginTop: 2 }}
         onChange={(e) => setRepoUrl(e.target.value)}
       />
       {tabIndex === 1 && (
@@ -60,7 +59,7 @@ const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk, loading }) => {
           label="Question"
           variant="outlined"
           value={question}
-          sx={{ minWidth: '500px' }}
+          sx={{ minWidth: "500px" }}
           onChange={(e) => setQuestion(e.target.value)}
         />
       )}
@@ -68,8 +67,11 @@ const RepoInput: React.FC<RepoInputProps> = ({ onAnalyze, onAsk, loading }) => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <Button variant="contained" onClick={tabIndex === 0 ? handleAnalyze : handleAsk}>
-          {tabIndex === 0 ? 'Analyze' : 'Ask'}
+        <Button
+          variant="contained"
+          onClick={tabIndex === 0 ? handleSummarize : handleAsk}
+        >
+          {tabIndex === 0 ? "Summarize" : "Ask"}
         </Button>
       )}
     </Box>

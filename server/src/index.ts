@@ -12,7 +12,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 
-app.post("/analyze", async (req: Request, res: Response) => {
+app.post("/summarize", async (req: Request, res: Response) => {
   try {
     const { repoUrl } = req.body;
     if (!repoUrl)
