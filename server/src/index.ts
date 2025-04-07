@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { cloneRepository, readRepositoryFiles } from "./utils/repoManager.js";
+import { readRepositoryFiles, fetchRepoInsights } from "./utils/repoManager.js";
 import {
   summarizeRepository,
   askQuestion,
@@ -42,6 +42,22 @@ app.post("/ask", async (req: Request, res: Response) => {
 
     res.json({ answer });
   } catch (error) {
+    res.status(500).json({ error: (error as any).message });
+  }
+});
+
+app.post("/stats", async (req: Request, res: Response) => {
+  try {
+    const { repoUrl } = req.body;
+    if (!repoUrl) {
+      return res.status(404).json({ error: "Repo Url is not found" });
+    }
+
+    const stats = await fetchRepoInsights(repoUrl);
+    return res.json({ data: stats });
+    
+  } catch (error) {
+    console.error("Error in /stats endpoint:", error); // Log the error
     res.status(500).json({ error: (error as any).message });
   }
 });

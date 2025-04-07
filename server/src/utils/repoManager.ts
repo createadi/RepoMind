@@ -1,6 +1,10 @@
 import fs from "fs-extra";
 import path from "path";
 import { simpleGit, SimpleGit } from "simple-git";
+import fetch from "node-fetch";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const REPO_DIR = "./repos"; // Directory for cloned repos
 
@@ -45,7 +49,8 @@ export async function readRepositoryFiles(
         item === "CONTRIBUTING.md" ||
         item === "CODE_OF_CONDUCT.md" ||
         item === "package.json" ||
-        item === "package-lock.json"
+        item === "package-lock.json" ||
+        item.includes(".png")
       ) {
         continue;
       }
@@ -63,4 +68,39 @@ export async function readRepositoryFiles(
 
   await readDir(repoPath);
   return files;
+}
+
+// Fetch GitHub repository insights
+export async function fetchRepoInsights(repoUrl: string): Promise<any> {
+  try {
+    const match = repoUrl.match(/github\.com\/(.+?)\/(.+?)(\.git|$)/);
+    if (!match) {
+      throw new Error("Invalid GitHub repository URL");
+    }
+
+    const [_, owner, repo] = match;
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
+
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch repository insights: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    
+    return {
+      topLanguage: data.language,
+      stars: data.stargazers_count,
+      forks: data.forks_count,
+      openIssues: data.open_issues_count,
+      watchers: data.watchers_count,
+    };
+  } catch (error) {
+    throw new Error(`Error fetching repository insights: ${(error as any).message}`);
+  }
 }
