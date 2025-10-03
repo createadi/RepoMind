@@ -43,6 +43,7 @@ export async function readRepositoryFiles(
 
       if (
         item === ".git" ||
+        item === ".DS_Store" ||
         item === "requirements.txt" ||
         item === "README.md" ||
         item === "LICENSE" ||
@@ -50,7 +51,11 @@ export async function readRepositoryFiles(
         item === "CODE_OF_CONDUCT.md" ||
         item === "package.json" ||
         item === "package-lock.json" ||
-        item.includes(".png")
+        item.includes(".png") ||
+        item.includes(".jpg") ||
+        item.includes(".svg") ||
+        item.includes(".ico") ||
+        item.includes(".css")
       ) {
         continue;
       }

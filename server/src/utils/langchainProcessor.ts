@@ -5,7 +5,7 @@ import { encoding_for_model } from "tiktoken";
 dotenv.config();
 
 const llm = new ChatOpenAI({
-  model: "gpt-4o-mini", // or "gpt-3.5-turbo"
+  model: "gpt-3.5-turbo",
   openAIApiKey: process.env.OPENAI_API_KEY,
   temperature: 0.2,
 });
@@ -17,7 +17,7 @@ interface File {
 
 // Function to count tokens in a string
 function countTokens(text: string): number {
-  const encoder = encoding_for_model("gpt-4o-mini"); // or "gpt-3.5-turbo"
+  const encoder = encoding_for_model("gpt-3.5-turbo");
   const tokens = encoder.encode(text);
   return tokens.length;
 }
@@ -47,7 +47,6 @@ export async function summarizeRepository(files: File[]): Promise<string> {
     if (tokenCount > 4096) {
       return "Error: Token limit exceeded.";
     }
-
     const response = await llm.invoke(messages);
     return typeof response.content === "string"
       ? response.content
