@@ -57,7 +57,6 @@ app.post("/stats", async (req: Request, res: Response) => {
     return res.json({ data: stats });
     
   } catch (error) {
-    console.error("Error in /stats endpoint:", error); // Log the error
     res.status(500).json({ error: (error as any).message });
   }
 });
